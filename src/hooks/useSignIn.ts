@@ -17,7 +17,7 @@ export const useSignIn = () => {
 
     try {
       await signInUser({ email, password });
-      navigate("/genres");
+      navigate("/events"); // Changed from "/genres" to "/events"
       console.log("Signed in successfully!");
     } catch (err) {
       const authError = err as AuthError;

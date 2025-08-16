@@ -4,16 +4,12 @@ import SignUpPage from "./pages/SignUpPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import SignInPage from "./pages/SignInPage.tsx";
-import GenresPage from "./pages/music/GenresPage.tsx";
-import ArtistsPage from "./pages/music/ArtistsPage.tsx";
-import SongsPage from "./pages/music/SongsPage.tsx";
 import Layout from "./Layout.tsx";
 
-import AdminRoute from "./components/admin/AdminRoute.tsx";
-import AdminLayout from "./components/admin/AdminLayout.tsx";
-import AdminGenresPage from "./pages/admin/AdminGenresPage.tsx";
-import AdminArtistsPage from "./pages/admin/AdminArtistsPage.tsx";
-import AdminSongsPage from "./pages/admin/AdminSongsPage.tsx";
+// Import new Event pages
+import EventsPage from "./pages/events/EventsPage.tsx";
+import EventDetailPage from "./pages/events/EventDetailPage.tsx";
+import EventFormPage from "./pages/events/EventFormPage.tsx";
 
 function App() {
   return (
@@ -23,7 +19,7 @@ function App() {
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="/sign-in" element={<SignInPage />} />
 
-      {/* Protected routes for regular users */}
+      {/* Protected routes for EventMate users */}
       <Route
         element={
           <ProtectedRoute>
@@ -31,19 +27,17 @@ function App() {
           </ProtectedRoute>
         }
       >
-        <Route path="/genres" element={<GenresPage />} />
-        <Route path="/genres/:genreId/artists" element={<ArtistsPage />} />
-        <Route path="/artists/:artistId/songs" element={<SongsPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        {/* Default route for authenticated users */}
+        <Route index element={<Navigate to="/events" replace />} />
 
-        <Route path="/admin" element={<AdminRoute />}>
-          <Route element={<AdminLayout />}>
-            <Route index element={<Navigate to="/admin/genres" replace />} />
-            <Route path="genres" element={<AdminGenresPage />} />
-            <Route path="artists" element={<AdminArtistsPage />} />
-            <Route path="songs" element={<AdminSongsPage />} />
-          </Route>
-        </Route>
+        {/* Event CRUD Routes */}
+        <Route path="/events" element={<EventsPage />} />
+        <Route path="/events/new" element={<EventFormPage />} />
+        <Route path="/events/:eventId" element={<EventDetailPage />} />
+        <Route path="/events/:eventId/edit" element={<EventFormPage />} />
+
+        {/* User Profile Route */}
+        <Route path="/profile" element={<ProfilePage />} />
       </Route>
     </Routes>
   );

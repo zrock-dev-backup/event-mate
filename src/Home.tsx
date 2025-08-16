@@ -26,7 +26,7 @@ function HomePage() {
             marginBottom: 4,
           }}
         >
-          Welcome to Spoty!
+          Welcome to EventMate! {/* Changed from Spoty */}
         </Typography>
 
         <Stack
@@ -43,13 +43,6 @@ function HomePage() {
           >
             Sign Up
           </Button>
-            <Button
-                variant="contained"
-                onClick={() => {throw new Error("This is your first error!");}}
-                size="large"
-            >
-                Error button
-            </Button>
           <Button
             variant="contained"
             onClick={() => navigate("/sign-in")}

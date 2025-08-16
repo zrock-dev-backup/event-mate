@@ -6,7 +6,7 @@ import { useAuth } from "../AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { isAdmin } = useAuth();
+  const { isAdmin } = useAuth(); // Keep isAdmin for potential future use
 
   const handleSignOut = () => {
     signOut(auth).then(() => navigate("/"));
@@ -19,16 +19,17 @@ export default function Header() {
           variant="h6"
           component="div"
           sx={{ flexGrow: 1, cursor: "pointer" }}
-          onClick={() => navigate("/genres")}
+          onClick={() => navigate("/events")} // Navigate to the new events dashboard
         >
-          Spoty
+          EventMate {/* Changed from Spoty */}
         </Typography>
-        <Button color="inherit" onClick={() => navigate("/genres")}>
-          Genres
+        <Button color="inherit" onClick={() => navigate("/events")}>
+          My Events {/* Changed from Genres */}
         </Button>
         <Button color="inherit" onClick={() => navigate("/profile")}>
           Profile
         </Button>
+        {/* The Admin button can remain for future admin features */}
         {isAdmin && (
           <Button color="inherit" onClick={() => navigate("/admin")}>
             Admin
