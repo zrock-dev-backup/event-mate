@@ -1,3 +1,3 @@
 format:
 	git add src/
-	git status --porcelain src/ | awk '{print $$2}' | xargs npx prettier --write
+	git diff --cached --name-only --diff-filter=AM src/ | xargs npx prettier --write

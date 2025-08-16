@@ -2,11 +2,9 @@ import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
-import { useAuth } from "../AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { isAdmin } = useAuth(); // Keep isAdmin for potential future use
 
   const handleSignOut = () => {
     signOut(auth).then(() => navigate("/"));
@@ -19,22 +17,17 @@ export default function Header() {
           variant="h6"
           component="div"
           sx={{ flexGrow: 1, cursor: "pointer" }}
-          onClick={() => navigate("/events")} // Navigate to the new events dashboard
+          onClick={() => navigate("/events")}
         >
-          EventMate {/* Changed from Spoty */}
+          EventMate
         </Typography>
         <Button color="inherit" onClick={() => navigate("/events")}>
-          My Events {/* Changed from Genres */}
+          My Events
         </Button>
         <Button color="inherit" onClick={() => navigate("/profile")}>
           Profile
         </Button>
-        {/* The Admin button can remain for future admin features */}
-        {isAdmin && (
-          <Button color="inherit" onClick={() => navigate("/admin")}>
-            Admin
-          </Button>
-        )}
+        {/* Admin button removed as the feature slice has been deleted. */}
         <Button color="inherit" onClick={handleSignOut}>
           Sign Out
         </Button>

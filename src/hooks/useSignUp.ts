@@ -25,14 +25,27 @@ export const useSignUp = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // ... (validation logic remains the same)
-    if (!name || !email || !password || password.length < 6) {
-        // Simplified validation check for brevity
-        setValidationError("Please fill all fields correctly.");
-        return;
+    setValidationError("");
+    setStatus(null);
+    setIsSubmitting(true);
+
+    // Client-side validation
+    if (!name || name.length < 1) {
+      setValidationError("Name is required.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setValidationError("Please enter a valid email address.");
+      setIsSubmitting(false);
+      return;
+    }
+    if (!password || password.length < 6) {
+      setValidationError("Password must be at least 6 characters long.");
+      setIsSubmitting(false);
+      return;
     }
 
-    setIsSubmitting(true);
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
@@ -47,7 +60,18 @@ export const useSignUp = () => {
       });
       setTimeout(() => navigate("/events"), 2000); // Changed from "/genres"
     } catch (error: any) {
-      // ... (error handling remains the same)
+      if (error.code === "auth/email-already-in-use") {
+        setStatus({
+          type: "error",
+          message: "This email address is already in use.",
+        });
+      } else {
+        setStatus({
+          type: "error",
+          message: "Failed to create an account. Please try again.",
+        });
+      }
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -56,7 +80,8 @@ export const useSignUp = () => {
   const handleSocialSignIn = async (
     provider: GoogleAuthProvider | FacebookAuthProvider,
   ) => {
-    // ... (logic remains the same)
+    setIsSubmitting(true);
+    setStatus(null);
     try {
       const { user } = await signInWithPopup(auth, provider);
       await createUserProfileDocument(user);
@@ -66,13 +91,28 @@ export const useSignUp = () => {
       });
       setTimeout(() => navigate("/events"), 2000); // Changed from "/genres"
     } catch (error: any) {
-      // ... (error handling remains the same)
+      console.error("Social Sign-In Error: ", error);
+      setStatus({
+        type: "error",
+        message: "Failed to sign in. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  // ... (return statement remains the same, only showing changed parts)
   return {
-    name, setName, email, setEmail, password, setPassword, validationError,
-    isSubmitting, status, setStatus, handleSubmit, handleSocialSignIn
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    validationError,
+    isSubmitting,
+    status,
+    setStatus,
+    handleSubmit,
+    handleSocialSignIn,
   };
 };

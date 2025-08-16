@@ -6,10 +6,14 @@ import ProtectedRoute from "./ProtectedRoute.tsx";
 import SignInPage from "./pages/SignInPage.tsx";
 import Layout from "./Layout.tsx";
 
-// Import new Event pages
+// Event pages
 import EventsPage from "./pages/events/EventsPage.tsx";
 import EventDetailPage from "./pages/events/EventDetailPage.tsx";
 import EventFormPage from "./pages/events/EventFormPage.tsx";
+
+// The AdminRoute and related components have been deleted, so they are removed.
+// import AdminRoute from "./components/admin/AdminRoute.tsx";
+// import AdminLayout from "./components/admin/AdminLayout.tsx";
 
 function App() {
   return (
@@ -38,6 +42,9 @@ function App() {
 
         {/* User Profile Route */}
         <Route path="/profile" element={<ProfilePage />} />
+
+        {/* The entire admin section is removed as its components are now deleted.
+            It can be re-added when a new admin feature is required for EventMate. */}
       </Route>
     </Routes>
   );
