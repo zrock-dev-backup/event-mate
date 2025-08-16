@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Allow users to read and write their own profile data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Rules for the new 'events' collection
+    match /events/{eventId} {
+      // Any authenticated user can create an event, as long as they set themselves as the owner.
+      allow create: if request.auth != null
+                    && request.resource.data.ownerId == request.auth.uid;
+
+      // Only the owner of an event can read, update, or delete it.
+      // Note: The 'read' rule will be expanded in User Story 2 to allow guests.
+      allow read, update, delete: if request.auth != null
+                                  && resource.data.ownerId == request.auth.uid;
+    }
+  }
+}
